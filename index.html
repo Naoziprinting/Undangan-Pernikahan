@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Andi & Sari</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <div class="couple-names">
+                    <h1 class="groom-name">Andi</h1>
+                    <div class="ampersand">&</div>
+                    <h1 class="bride-name">Sari</h1>
+                </div>
+                <p class="hero-subtitle">Akan Menikah</p>
+                <p class="wedding-date">25 Desember 2025</p>
+                
+                <!-- Guest Name Display -->
+                <div class="guest-display" id="guestDisplay">
+                    <div class="guest-card">
+                        <i class="fas fa-heart"></i>
+                        <h3 class="guest-greeting">Kepada Yth:</h3>
+                        <h2 class="guest-name" id="displayGuestName">Bapak/Ibu/Saudara/i</h2>
+                        <p class="guest-instruction">Scroll untuk informasi lengkap</p>
+                    </div>
+                </div>
+                
+                <div class="scroll-indicator">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#couple">Mempelai</a></li>
+            <li><a href="#story">Cerita Kami</a></li>
+            <li><a href="#events">Acara</a></li>
+            <li><a href="#gallery">Galeri</a></li>
+            <li><a href="#comments">Ucapan</a></li>
+            <li><a href="#rsvp">Konfirmasi</a></li>
+            <li><a href="#gifts">Hadiah</a></li>
+            <li><a href="#location">Lokasi</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Couple Section -->
+        <section class="section couple-section" id="couple">
+            <h2 class="section-title">Mempelai</h2>
+            <div class="couple-container">
+                <div class="couple-card groom">
+                    <div class="couple-photo-frame">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Andi" class="couple-photo">
+                    </div>
+                    <h3 class="couple-name">Andi Wijaya</h3>
+                    <p class="couple-bio">Putra pertama dari Bapak Budi & Ibu Ani</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="heart-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+                
+                <div class="couple-card bride">
+                    <div class="couple-photo-frame">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Sari" class="couple-photo">
+                    </div>
+                    <h3 class="couple-name">Sari Lestari</h3>
+                    <p class="couple-bio">Putri kedua dari Bapak Joko & Ibu Rini</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Story -->
+        <section class="section story-section" id="story">
+            <h2 class="section-title">Cerita Kami</h2>
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>Pertemuan Pertama</h3>
+                        <p class="timeline-date">Juni 2018</p>
+                        <p>Kami bertemu pertama kali di sebuah acara seminar kampus. Saat itu, kami sama-sama tidak menyadari bahwa pertemuan itu akan mengubah hidup kami selamanya.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>Pacaran</h3>
+                        <p class="timeline-date">Januari 2019</p>
+                        <p>Setelah beberapa bulan saling mengenal, kami memutuskan untuk menjalin hubungan serius. Banyak kenangan indah kami lewati bersama.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>Tunangan</h3>
+                        <p class="timeline-date">Desember 2022</p>
+                        <p>Di bawah langit berbintang di pantai Parangtritis, Andi melamar Sari. Saat itu adalah momen paling membahagiakan dalam hidup kami.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>Menikah</h3>
+                        <p class="timeline-date">Desember 2025</p>
+                        <p>Kini kami akan menyatukan dua hati dalam ikatan pernikahan yang suci. Semoga cinta kami terus tumbuh dan menjadi berkah bagi banyak orang.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events -->
+        <section class="section events-section" id="events">
+            <h2 class="section-title">Detail Acara</h2>
+            <div class="events-container">
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-mosque"></i>
+                    </div>
+                    <h3 class="event-title">Akad Nikah</h3>
+                    <p class="event-date">25 Desember 2025</p>
+                    <p class="event-time">08:00 - 10:00 WIB</p>
+                    <p class="event-location">Masjid Al-Hikmah</p>
+                    <p class="event-address">Jl. Merdeka No. 123, Yogyakarta</p>
+                    <a href="#location" class="event-map-link">Lihat Peta <i class="fas fa-map-marker-alt"></i></a>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-glass-cheers"></i>
+                    </div>
+                    <h3 class="event-title">Resepsi</h3>
+                    <p class="event-date">25 Desember 2025</p>
+                    <p class="event-time">11:00 - 14:00 WIB</p>
+                    <p class="event-location">Gedung Serbaguna Sejahtera</p>
+                    <p class="event-address">Jl. Sudirman No. 45, Yogyakarta</p>
+                    <a href="#location" class="event-map-link">Lihat Peta <i class="fas fa-map-marker-alt"></i></a>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3 class="event-title">Syukuran</h3>
+                    <p class="event-date">26 Desember 2025</p>
+                    <p class="event-time">10:00 - 12:00 WIB</p>
+                    <p class="event-location">Rumah Mempelai Pria</p>
+                    <p class="event-address">Perumahan Taman Asri Blok C5, Yogyakarta</p>
+                    <a href="#location" class="event-map-link">Lihat Peta <i class="fas fa-map-marker-alt"></i></a>
+                </div>
+            </div>
+            
+            <div class="countdown-container">
+                <h3 class="countdown-title">Hitungan Mundur Menuju Hari Bahagia</h3>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="days">00</span>
+                        <span class="countdown-label">Hari</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">00</span>
+                        <span class="countdown-label">Jam</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <span class="countdown-label">Menit</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <span class="countdown-label">Detik</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section class="section gallery-section" id="gallery">
+            <h2 class="section-title">Galeri Kami</h2>
+            <div class="gallery-container">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Pre-wedding">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Engagement">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Together">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Love">
+                </div>
+            </div>
+        </section>
+
+        <!-- Comments Section -->
+        <section class="section comments-section" id="comments">
+            <h2 class="section-title">Ucapan & Doa</h2>
+            <p class="section-subtitle">Kirimkan ucapan dan doa untuk mempelai</p>
+            
+            <div class="comments-container">
+                <div class="comments-header">
+                    <div class="comments-stats">
+                        <span id="commentsCount">0</span> Ucapan
+                    </div>
+                    <button class="refresh-btn" id="refreshComments">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                
+                <div class="comments-list" id="commentsList">
+                    <!-- Comments will be loaded here -->
+                </div>
+                
+                <div class="comments-empty" id="commentsEmpty">
+                    <i class="fas fa-comment-dots"></i>
+                    <p>Belum ada ucapan. Jadilah yang pertama mengucapkan!</p>
+                </div>
+                
+                <div class="comments-loader" id="commentsLoader">
+                    <div class="spinner"></div>
+                    <p>Memuat ucapan...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP Form -->
+        <section class="section rsvp-section" id="rsvp">
+            <h2 class="section-title">Konfirmasi Kehadiran</h2>
+            <p class="section-subtitle">Mohon konfirmasi kehadiran Anda sebelum 20 Desember 2025</p>
+            
+            <div class="rsvp-container">
+                <form id="rsvpForm" class="rsvp-form">
+                    <input type="hidden" id="guestId" name="guestId" value="">
+                    
+                    <div class="form-group">
+                        <label for="guestName">Nama Lengkap *</label>
+                        <input type="text" id="guestName" name="guestName" required>
+                        <small class="form-hint">Nama akan terisi otomatis jika Anda menggunakan link undangan khusus</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guestEmail">Email</label>
+                        <input type="email" id="guestEmail" name="guestEmail">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guestPhone">Nomor Telepon/WA *</label>
+                        <input type="tel" id="guestPhone" name="guestPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guestCount">Jumlah Tamu *</label>
+                        <select id="guestCount" name="guestCount" required>
+                            <option value="" disabled selected>Pilih jumlah tamu</option>
+                            <option value="1">1 Orang</option>
+                            <option value="2">2 Orang</option>
+                            <option value="3">3 Orang</option>
+                            <option value="4">4 Orang</option>
+                            <option value="5">5 Orang atau lebih</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Konfirmasi Kehadiran *</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="Hadir" required>
+                                <span class="radio-custom"></span>
+                                <span class="radio-text">Hadir</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="Tidak Hadir" required>
+                                <span class="radio-custom"></span>
+                                <span class="radio-text">Tidak Hadir</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Ucapan / Doa</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Tulis ucapan dan doa untuk mempelai..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span>Kirim Konfirmasi</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                
+                <div class="rsvp-info">
+                    <h3>Info Penting</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Konfirmasi kehadiran membantu kami dalam persiapan acara</li>
+                        <li><i class="fas fa-check-circle"></i> Tamu yang telah konfirmasi akan mendapat tempat duduk prioritas</li>
+                        <li><i class="fas fa-check-circle"></i> Konfirmasi dapat dilakukan hingga H-5 sebelum acara</li>
+                        <li><i class="fas fa-check-circle"></i> Bagi tamu yang tidak hadir, tetap dapat mengirimkan doa melalui form ini</li>
+                    </ul>
+                    
+                    <div class="attendance-stats">
+                        <h4>Statistik Kehadiran</h4>
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <div class="stat-number" id="attendingCount">0</div>
+                                <div class="stat-label">Akan Hadir</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="notAttendingCount">0</div>
+                                <div class="stat-label">Tidak Hadir</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="totalGuestsCount">0</div>
+                                <div class="stat-label">Total Tamu</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gift Information -->
+        <section class="section gifts-section" id="gifts">
+            <h2 class="section-title">Hadiah Pernikahan</h2>
+            <p class="section-subtitle">Kehadiran dan doa Anda adalah hadiah terindah bagi kami. Jika ingin memberikan tanda kasih, berikut informasi rekening kami:</p>
+            
+            <div class="gifts-container">
+                <div class="bank-account">
+                    <div class="bank-card">
+                        <div class="bank-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>BCA - Andi Wijaya</h3>
+                        <p class="account-number">1234-5678-9012</p>
+                    </div>
+                    
+                    <div class="bank-card">
+                        <div class="bank-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>Mandiri - Sari Lestari</h3>
+                        <p class="account-number">9876-5432-1098</p>
+                    </div>
+                </div>
+                
+                <div class="gift-info">
+                    <h3><i class="fas fa-gift"></i> Alternatif Hadiah Lainnya</h3>
+                    <ul>
+                        <li>Anda dapat mengirimkan hadiah langsung ke alamat kami</li>
+                        <li>Gift card dari toko perabotan rumah tangga</li>
+                        <li>Doa dan restu adalah hadiah terbaik untuk kami</li>
+                    </ul>
+                    
+                    <div class="gift-note">
+                        <p><strong>Catatan:</strong> Untuk hadiah fisik, mohon dikirimkan ke alamat:</p>
+                        <p>Jl. Kenangan Indah No. 10, Yogyakarta 55281</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location -->
+        <section class="section location-section" id="location">
+            <h2 class="section-title">Lokasi Acara</h2>
+            
+            <div class="location-container">
+                <div class="location-info">
+                    <div class="location-card">
+                        <h3><i class="fas fa-mosque"></i> Akad Nikah</h3>
+                        <p><strong>Masjid Al-Hikmah</strong></p>
+                        <p>Jl. Merdeka No. 123, Yogyakarta</p>
+                        <p>25 Desember 2025, 08:00 - 10:00 WIB</p>
+                        <a href="https://goo.gl/maps/example1" target="_blank" class="map-link">
+                            <i class="fas fa-map-marked-alt"></i> Buka di Google Maps
+                        </a>
+                    </div>
+                    
+                    <div class="location-card">
+                        <h3><i class="fas fa-glass-cheers"></i> Resepsi</h3>
+                        <p><strong>Gedung Serbaguna Sejahtera</strong></p>
+                        <p>Jl. Sudirman No. 45, Yogyakarta</p>
+                        <p>25 Desember 2025, 11:00 - 14:00 WIB</p>
+                        <a href="https://goo.gl/maps/example2" target="_blank" class="map-link">
+                            <i class="fas fa-map-marked-alt"></i> Buka di Google Maps
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-quote">
+                <p>"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup dari jenismu sendiri, supaya kamu merasa tenteram kepadanya, dan dijadikan-Nya di antaramu perasaan kasih dan sayang."</p>
+                <p class="quote-source">(QS. Ar-Rum: 21)</p>
+            </div>
+            
+            <div class="footer-names">
+                <h3>Andi & Sari</h3>
+                <p>25 Desember 2025</p>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>Kontak Keluarga</h4>
+                <p><i class="fas fa-phone"></i> Budi (Ayah Andi): 0812-3456-7890</p>
+                <p><i class="fas fa-phone"></i> Joko (Ayah Sari): 0813-4567-8901</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 Undangan Pernikahan Andi & Sari. Dibuat dengan <i class="fas fa-heart"></i> menggunakan Google Sheets & GitHub Pages.</p>
+            <p class="footer-tech">Powered by Google Apps Script & GitHub Pages</p>
+        </div>
+    </footer>
+
+    <!-- Audio Player -->
+    <div class="audio-player">
+        <button id="audioToggle" class="audio-toggle">
+            <i class="fas fa-music"></i>
+        </button>
+        <audio id="weddingAudio" loop>
+            <source src="https://assets.mixkit.co/music/preview/mixkit-wedding-day-583.mp3" type="audio/mpeg">
+        </audio>
+        <div class="audio-info">
+            <span>Wedding Music</span>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="modal-title">Konfirmasi Berhasil!</h3>
+            <p class="modal-text">Terima kasih telah mengkonfirmasi kehadiran. Kami sangat menantikan kehadiran Anda di hari bahagia kami.</p>
+            <button class="modal-close" id="modalClose">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Mengirim data...</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
