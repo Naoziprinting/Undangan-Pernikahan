@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor Undangan Premium</title>
+    <style>
+        :root { --ios-bg: #F2F2F7; --ios-accent: #d4af37; --ios-card: #FFFFFF; }
+        body { font-family: -apple-system, sans-serif; background: var(--ios-bg); padding: 20px; color: #1c1c1e; padding-bottom: 100px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .card { background: var(--ios-card); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; border-bottom: 1px solid #f2f2f7; padding-bottom: 10px; }
+        .form-group:last-child { border: none; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #8e8e93; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #d1d1d6; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
+        
+        .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .switch { position: relative; display: inline-block; width: 51px; height: 31px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e9e9eb; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 27px; width: 27px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 3px 8px rgba(0,0,0,0.15); }
+        input:checked + .slider { background-color: #34c759; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        
+        .btn-save { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 560px; padding: 16px; background: #2d2d2d; color: white; border: none; border-radius: 14px; font-size: 17px; font-weight: 600; cursor: pointer; z-index: 100; }
+        h2 { font-size: 18px; border-left: 4px solid var(--ios-accent); padding-left: 10px; margin: 25px 0 10px; }
+        .preview-img { width: 100%; height: 100px; object-fit: cover; border-radius: 10px; margin-top: 10px; background: #eee; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 20px;">Editor Undangan</h1>
+
+        <!-- Tipe Undangan -->
+        <div class="card">
+            <div class="row">
+                <label style="color: #1c1c1e; font-size: 15px;">Jenis Undangan</label>
+                <select id="type" style="width: auto;" onchange="toggleFields()">
+                    <option value="wedding">Pernikahan</option>
+                    <option value="khitan">Khitanan</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Wedding Section -->
+        <div id="wedding-fields">
+            <h2>Mempelai Pria</h2>
+            <div class="card">
+                <div class="form-group"><label>Nama Lengkap</label><input type="text" id="groom_name"></div>
+                <div class="form-group"><label>Nama Panggilan</label><input type="text" id="groom_nickname" placeholder="Contoh: Rizky"></div>
+                <div class="form-group"><label>Anak Ke- (Putra Ke-)</label><input type="text" id="groom_child_number" placeholder="Contoh: kedua, pertama, ke-3"></div>
+                <div class="form-group"><label>Alamat Keluarga (Kediaman)</label><input type="text" id="groom_address" placeholder="Contoh: Condongcatur, Sleman"></div>
+                <div class="form-group"><label>URL Foto</label><input type="text" id="groom_photo" onchange="preview(this)"></div>
+                <div class="form-group"><label>Nama Ayah</label><input type="text" id="groom_father"></div>
+                <div class="form-group"><label>Nama Ibu</label><input type="text" id="groom_mother"></div>
+            </div>
+            <h2>Mempelai Wanita</h2>
+            <div class="card">
+                <div class="form-group"><label>Nama Lengkap</label><input type="text" id="bride_name"></div>
+                <div class="form-group"><label>Nama Panggilan</label><input type="text" id="bride_nickname" placeholder="Contoh: Aisyah"></div>
+                <div class="form-group"><label>Anak Ke- (Putri Ke-)</label><input type="text" id="bride_child_number" placeholder="Contoh: pertama, kedua, bungsu"></div>
+                <div class="form-group"><label>Alamat Keluarga (Kediaman)</label><input type="text" id="bride_address" placeholder="Contoh: Kepanjen, Malang"></div>
+                <div class="form-group"><label>URL Foto</label><input type="text" id="bride_photo" onchange="preview(this)"></div>
+                <div class="form-group"><label>Nama Ayah</label><input type="text" id="bride_father"></div>
+                <div class="form-group"><label>Nama Ibu</label><input type="text" id="bride_mother"></div>
+            </div>
+        </div>
+
+        <!-- Khitan Section -->
+        <div id="khitan-fields" style="display:none;">
+            <h2>Detail Anak</h2>
+            <div class="card">
+                <div class="form-group"><label>Nama Lengkap</label><input type="text" id="khitan_name"></div>
+                <div class="form-group"><label>URL Foto</label><input type="text" id="khitan_photo" onchange="preview(this)"></div>
+                <div class="form-group"><label>Nama Orang Tua</label><input type="text" id="khitan_parents"></div>
+            </div>
+        </div>
+
+        <!-- Acara Section -->
+        <h2>Waktu & Lokasi</h2>
+        <div class="card">
+            <div class="form-group">
+                <label>Acara 1 (Akad/Utama)</label>
+                <input type="text" id="event_1_name" placeholder="Nama Acara">
+                <input type="datetime-local" id="event_1_date" style="margin-top: 5px;">
+                <input type="text" id="event_1_loc" placeholder="Lokasi Gedung" style="margin-top: 5px;">
+            </div>
+            <div class="form-group">
+                <label>Acara 2 (Resepsi/Tambahan)</label>
+                <input type="text" id="event_2_name" placeholder="Nama Acara">
+                <input type="datetime-local" id="event_2_date" style="margin-top: 5px;">
+                <input type="text" id="event_2_loc" placeholder="Lokasi Gedung" style="margin-top: 5px;">
+            </div>
+            <div class="form-group">
+                <label>Google Maps</label>
+                <textarea id="location_address" rows="2" placeholder="Alamat Lengkap"></textarea>
+                <input type="text" id="location_url" placeholder="URL Google Maps" style="margin-top: 5px;">
+            </div>
+        </div>
+
+        <!-- Media Section -->
+        <h2>Media & Galeri</h2>
+        <div class="card">
+            <div class="form-group"><label>URL Foto Sampul (Hero)</label><input type="text" id="hero_image" onchange="preview(this)"></div>
+            <div class="form-group"><label>URL Musik (.mp3)</label><input type="text" id="music_url"></div>
+            <div class="form-group">
+                <label>Galeri Foto (Masukan URL)</label>
+                <input type="text" id="gallery_1" placeholder="Foto 1" style="margin-bottom: 5px;">
+                <input type="text" id="gallery_2" placeholder="Foto 2" style="margin-bottom: 5px;">
+                <input type="text" id="gallery_3" placeholder="Foto 3" style="margin-bottom: 5px;">
+                <input type="text" id="gallery_4" placeholder="Foto 4">
+            </div>
+        </div>
+
+        <!-- Gift Section -->
+        <h2>Hadiah Digital</h2>
+        <div class="card">
+            <div class="form-group"><label>Nama Bank / E-Wallet</label><input type="text" id="gift_bank"></div>
+            <div class="form-group"><label>Nomor Rekening</label><input type="text" id="gift_acc"></div>
+            <div class="form-group"><label>Atas Nama</label><input type="text" id="gift_name"></div>
+        </div>
+
+        <!-- Settings Section -->
+        <h2>Tampilkan Kolom</h2>
+        <div class="card">
+            <div class="form-group">
+                <div class="row"><span>Waktu & Lokasi</span><label class="switch"><input type="checkbox" id="sec_events_v" checked><span class="slider"></span></label></div>
+            </div>
+            <div class="form-group">
+                <div class="row"><span>Galeri Foto</span><label class="switch"><input type="checkbox" id="sec_gallery_v" checked><span class="slider"></span></label></div>
+            </div>
+            <div class="form-group">
+                <div class="row"><span>Hadiah Digital</span><label class="switch"><input type="checkbox" id="sec_gift_v" checked><span class="slider"></span></label></div>
+            </div>
+            <div class="form-group">
+                <div class="row"><span>Pesan Ucapan</span><label class="switch"><input type="checkbox" id="sec_wishes_v" checked><span class="slider"></span></label></div>
+            </div>
+        </div>
+
+        <button class="btn-save" id="saveBtn" onclick="saveData()">Simpan Semua Perubahan</button>
+    </div>
+
+    <script>
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxW91ANBf-wFz-GT3yTkJWHK2WlLS5uxtoM-dk_SKbb1AsmypvykMADxWP1vHf8Y4mcsQ/exec";
+
+        window.onload = function() { loadData(); };
+
+        function preview(input) {
+            let next = input.nextElementSibling;
+            if (!next || next.tagName !== 'IMG') {
+                next = document.createElement('img');
+                next.className = 'preview-img';
+                input.parentNode.appendChild(next);
+            }
+            if (input.value) {
+                next.src = input.value;
+                next.style.display = 'block';
+            } else {
+                next.style.display = 'none';
+            }
+        }
+
+        function loadData() {
+            fetch(`${GAS_API_URL}?action=getSettings`)
+                .then(res => res.json())
+                .then(data => {
+                    Object.keys(data).forEach(key => {
+                        const el = document.getElementById(key);
+                        if (el) {
+                            if (el.type === 'checkbox') el.checked = data[key].visible;
+                            else el.value = data[key].value;
+                            if (el.onchange) el.onchange();
+                        }
+                    });
+                    toggleFields();
+                });
+        }
+
+        function toggleFields() {
+            const t = document.getElementById('type').value;
+            document.getElementById('wedding-fields').style.display = t === 'wedding' ? 'block' : 'none';
+            document.getElementById('khitan-fields').style.display = t === 'khitan' ? 'block' : 'none';
+        }
+
+        function saveData() {
+            const btn = document.getElementById('saveBtn');
+            btn.innerText = "Menyimpan...";
+            btn.disabled = true;
+
+            const payload = {};
+            const elements = document.querySelectorAll('input, select, textarea');
+            elements.forEach(el => {
+                if (el.id) {
+                    payload[el.id] = { 
+                        value: el.type === 'checkbox' ? (el.id.endsWith('_v') ? '' : el.checked) : el.value,
+                        visible: el.type === 'checkbox' ? el.checked : true
+                    };
+                }
+            });
+
+            fetch(`${GAS_API_URL}?action=saveSettings`, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            }).then(() => {
+                alert("Pengaturan Berhasil Disimpan!");
+                btn.innerText = "Simpan Semua Perubahan";
+                btn.disabled = false;
+            }).catch(err => {
+                alert("Gagal menyimpan: " + err);
+                btn.innerText = "Simpan Semua Perubahan";
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>

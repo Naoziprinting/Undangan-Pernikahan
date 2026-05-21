@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Undangan Digital</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <!-- Animation & Plugins CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+
+    <style>
+        :root {
+            --primary: #8da4a8; /* Arctic Rose soft blueish/grey, will be overridden by settings */
+            --bg-color: #f7f9f9;
+            --text-dark: #333;
+            --text-light: #777;
+            --white: #ffffff;
+            --gold: #d4af37;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-color); color: var(--text-dark); overflow-x: hidden; scroll-behavior: smooth; }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-cursive { font-family: 'Great Vibes', cursive; color: var(--primary); }
+        
+        .app-container { max-width: 500px; margin: 0 auto; background: var(--white); box-shadow: 0 0 40px rgba(0,0,0,0.05); position: relative; min-height: 100vh; padding-bottom: 80px; }
+        
+        /* Opening Overlay */
+        #opening-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: transform 1s cubic-bezier(0.8, 0, 0.2, 1); overflow: hidden; }
+        .overlay-bg { position: absolute; top:0; left:0; width:100%; height:100%; background-size: cover; background-position: center; opacity: 0.15; z-index: 1; }
+        .overlay-content { position: relative; z-index: 10; padding: 30px 24px; background: rgba(255,255,255,0.85); border-radius: 24px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.6); width: 85%; max-width: 400px; }
+        .open-btn { margin-top: 20px; padding: 12px 30px; background: var(--primary); color: white; border: none; border-radius: 30px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: 0.3s; font-family: inherit; }
+        .open-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
+
+        /* Sections */
+        section { padding: 5rem 2rem; text-align: center; position: relative; overflow: hidden; }
+        
+        /* Hero Cover */
+        .cover { height: 100vh; display: flex; flex-direction: column; justify-content: center; background-size: cover; background-position: center; position: relative; padding: 0; color: white; }
+        .cover::after { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%); z-index: 1; }
+        .cover-content { position: relative; z-index: 2; padding: 2rem 1.5rem; background: rgba(0,0,0,0.25); border-radius: 20px; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15); margin: 0 1rem; }
+        
+        /* Profiles */
+        .profile-img { width: 100%; max-width: 170px; height: auto; aspect-ratio: 3 / 4; border-radius: 16px; object-fit: cover; border: 4px solid var(--white); box-shadow: 0 10px 25px rgba(0,0,0,0.08); margin: 0 auto 15px; display: block; transition: transform 0.3s ease; }
+        .profile-img:hover { transform: scale(1.03); }
+        .couple-box { background: var(--bg-color); padding: 2.5rem 1.5rem; border-radius: 20px; margin-bottom: 2rem; position: relative; border: 1px solid rgba(0,0,0,0.02); }
+        
+        /* Countdown */
+        .count_down { display: flex; justify-content: center; gap: 12px; margin: 2rem 0; }
+        .cd-item { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); padding: 10px; border-radius: 12px; min-width: 65px; color: white; }
+        .cd-item span { display: block; }
+        .cd-num { font-size: 1.6rem; font-weight: 700; font-family: 'Playfair Display', serif; }
+        .cd-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; opacity: 0.9; }
+
+        /* Cards */
+        .event-card { background: var(--white); border-radius: 20px; padding: 2.5rem 2rem; margin-bottom: 2rem; box-shadow: 0 15px 40px rgba(0,0,0,0.04); border: 1px solid #f0f0f0; position: relative; }
+        .btn-action { display: inline-block; padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 12px; font-weight: 500; margin-top: 15px; font-size: 0.9rem; transition: 0.3s; border: none; cursor: pointer; width: 100%; }
+        .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+        
+        /* Gallery */
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .gallery-item { border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.06); aspect-ratio: 1 / 1; }
+        .gallery-item a { display: block; width: 100%; height: 100%; }
+        .gallery-item img { display: block; width: 100%; height: 100%; object-fit: cover; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .gallery-item:hover img { transform: scale(1.08); }
+
+        /* Wishes Form */
+        .wish-form { text-align: left; background: var(--white); padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
+        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 12px 15px; border: 1px solid #e1e1e1; border-radius: 10px; font-family: inherit; font-size: 0.95rem; background: #fafafa; transition: 0.3s; }
+        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(141, 164, 168, 0.1); }
+        
+        .wish-list { margin-top: 30px; max-height: 400px; overflow-y: auto; text-align: left; padding-right: 5px; }
+        .wish-list::-webkit-scrollbar { width: 6px; }
+        .wish-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .wish-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        .wish-box { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--primary); }
+        .wish-box h4 { font-size: 0.95rem; color: var(--text-dark); margin-bottom: 3px; }
+        .wish-box p { font-size: 0.85rem; color: var(--text-light); line-height: 1.5; }
+        .wish-box .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; background: var(--primary); color: white; margin-left: 5px; vertical-align: middle; }
+
+        /* Floating Nav */
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 8px 16px; border-radius: 40px; display: flex; gap: 15px; box-shadow: 0 12px 35px rgba(0,0,0,0.12); z-index: 1000; border: 1px solid rgba(255,255,255,0.6); transition: all 0.3s ease; }
+        .bottom-nav a { color: var(--text-light); font-size: 1.2rem; text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; }
+        .bottom-nav a:hover, .bottom-nav a.active { color: var(--primary); background: rgba(141, 164, 168, 0.1); transform: translateY(-4px) scale(1.1); }
+
+        /* Audio Control */
+        #audio-controls { position: fixed; top: 20px; right: 20px; z-index: 1000; width: 42px; height: 42px; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.08); cursor: pointer; color: var(--primary); font-size: 1.2rem; border: 1px solid rgba(255,255,255,0.5); transition: all 0.3s ease; }
+        #audio-controls:hover { transform: scale(1.08); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
+        
+        .divider-floral { width: 100%; height: 40px; background: url('https://cdn-icons-png.flaticon.com/512/1792/1792226.png') no-repeat center; background-size: contain; opacity: 0.2; margin: 1.5rem 0; }
+        .hidden { display: none !important; }
+
+        /* Typography classes for responsiveness */
+        .open-names-style { font-size: 3.8rem; line-height: 1.2; margin-bottom: 20px; }
+        .hero-names-style { font-size: 4.8rem; text-shadow: 2px 2px 15px rgba(0,0,0,0.35); line-height: 1.1; }
+        .couple-name-style { font-size: 2.8rem; margin: 10px 0; }
+        .footer-names-style { margin-top: 1.5rem; font-size: 3.2rem; color: white; }
+
+        /* Mobile Screens Responsive Styling */
+        @media (max-width: 480px) {
+            section { padding: 3.5rem 1.25rem; }
+            .couple-box { padding: 1.75rem 1rem; margin-bottom: 1.5rem; }
+            .event-card { padding: 1.75rem 1.25rem; margin-bottom: 1.5rem; }
+            .wish-form { padding: 1.5rem 1rem; }
+            
+            .open-names-style { font-size: 2.6rem; }
+            .hero-names-style { font-size: 3.2rem; }
+            .couple-name-style { font-size: 2.2rem; }
+            .footer-names-style { font-size: 2.4rem; }
+            
+            .count_down { gap: 8px; margin: 1.5rem 0; }
+            .cd-item { min-width: 58px; padding: 8px; border-radius: 10px; }
+            .cd-num { font-size: 1.3rem; }
+            .cd-label { font-size: 0.65rem; }
+            
+            #opening-overlay .overlay-content { padding: 25px 15px; width: 90%; }
+            .cover-content { margin: 0 0.5rem; padding: 1.5rem 1rem; }
+            
+            .bottom-nav { padding: 6px 12px; gap: 10px; bottom: 15px; }
+            .bottom-nav a { width: 34px; height: 34px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Opening Overlay -->
+    <div id="opening-overlay">
+        <div class="overlay-bg" id="overlay-bg"></div>
+        <div class="overlay-content animate__animated animate__fadeInUp">
+            <p id="open-title" style="text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; color: var(--text-light); margin-bottom: 10px;">The Wedding Of</p>
+            <h1 id="open-names" class="font-cursive open-names-style">...</h1>
+            <p style="font-size: 0.85rem; color: var(--text-light);">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+            <h2 id="guest-name" style="font-size: 1.3rem; margin: 10px 0; color: var(--text-dark); font-family: 'Playfair Display', serif;">Tamu Undangan</h2>
+            <p style="font-size: 0.75rem; color: var(--text-light); font-style: italic; margin-bottom: 20px;">*Mohon maaf bila ada kesalahan penulisan nama/gelar</p>
+            <button class="open-btn" onclick="openInvitation()">Buka Undangan</button>
+        </div>
+    </div>
+
+    <!-- Music Player -->
+    <div id="audio-controls" onclick="toggleAudio()">
+        <svg id="icon-music-play" style="display:none;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M133 440a35.37 35.37 0 01-17.5-4.67c-12-6.8-19.46-20-19.5-35.34V111.73c0-15.4 7.4-28.6 19.5-35.38 12.1-6.8 26.6-7 39-.6l273.6 144.52c12.7 6.7 20.3 19.8 20.3 34.33s-7.6 27.7-20.3 34.4L154.5 433.5c-6.8 3.6-14 5-21.5 6.5z"></path></svg>
+        <svg id="icon-music-pause" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M208 432h-48a16 16 0 01-16-16V96a16 16 0 0116-16h48a16 16 0 0116 16v320a16 16 0 01-16 16zM352 432h-48a16 16 0 01-16-16V96a16 16 0 0116-16h48a16 16 0 0116 16v320a16 16 0 01-16 16z"></path></svg>
+    </div>
+    <audio id="bg-music" loop></audio>
+
+    <div class="app-container">
+        
+        <!-- Cover Section -->
+        <section id="cover" class="cover">
+            <div class="cover-content">
+                <p id="hero-title" data-aos="fade-down" data-aos-duration="1000" style="text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 15px;">Pernikahan</p>
+                <h1 id="hero-names" class="font-cursive hero-names-style" data-aos="zoom-in" data-aos-duration="1500">...</h1>
+                <p id="hero-date" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" style="font-size: 1.1rem; margin-top: 15px; font-weight: 300; letter-spacing: 1px;"></p>
+                
+                <div class="count_down" id="countdown-wrap" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
+                    <div class="cd-item"><span id="cd-days" class="cd-num">00</span><span class="cd-label">Hari</span></div>
+                    <div class="cd-item"><span id="cd-hours" class="cd-num">00</span><span class="cd-label">Jam</span></div>
+                    <div class="cd-item"><span id="cd-mins" class="cd-num">00</span><span class="cd-label">Menit</span></div>
+                    <div class="cd-item"><span id="cd-secs" class="cd-num">00</span><span class="cd-label">Detik</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Intro -->
+        <section id="intro" style="padding-bottom: 2rem;">
+            <div data-aos="fade-up" data-aos-duration="1000">
+                <img src="https://cdn-icons-png.flaticon.com/512/1792/1792226.png" style="width: 50px; opacity: 0.3; margin-bottom: 15px;">
+                <p style="font-style: italic; font-family: 'Playfair Display', serif; font-size: 1.1rem;">Assalamu’alaikum Warahmatullahi Wabarakatuh</p>
+                <p id="intro-text" style="margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.8; color: var(--text-light);">
+                    Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami:
+                </p>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" style="padding-top: 0;">
+            <div id="wedding-ui">
+                <div class="couple-box" data-aos="fade-right" data-aos-duration="1000">
+                    <img id="groom-img" src="" class="profile-img">
+                    <h2 id="groom-nickname" class="font-cursive couple-name-style">...</h2>
+                    <h3 id="groom-fullname" style="font-size: 1.15rem; font-weight: 600; margin: -5px 0 8px; color: var(--text-dark); font-family: 'Playfair Display', serif;">...</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 5px; line-height: 1.5;">
+                        <span id="groom-order">Putra</span> dari Bapak <span id="groom-father" style="font-weight: 600; color: var(--text-dark);"></span> & Ibu <span id="groom-mother" style="font-weight: 600; color: var(--text-dark);"></span>
+                    </p>
+                    <p id="groom-address-container" style="font-size: 0.8rem; color: var(--text-light); margin-top: 10px; font-style: italic; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 8px; display: none;">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary); margin-right: 4px; vertical-align: middle;"><path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"></path></svg>
+                        Kediaman: <span id="groom-address"></span>
+                    </p>
+                </div>
+                
+                <h1 class="font-cursive" data-aos="zoom-in" style="font-size: 3.5rem; margin: -10px 0 20px;">&</h1>
+                
+                <div class="couple-box" data-aos="fade-left" data-aos-duration="1000">
+                    <img id="bride-img" src="" class="profile-img">
+                    <h2 id="bride-nickname" class="font-cursive couple-name-style">...</h2>
+                    <h3 id="bride-fullname" style="font-size: 1.15rem; font-weight: 600; margin: -5px 0 8px; color: var(--text-dark); font-family: 'Playfair Display', serif;">...</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 5px; line-height: 1.5;">
+                        <span id="bride-order">Putri</span> dari Bapak <span id="bride-father" style="font-weight: 600; color: var(--text-dark);"></span> & Ibu <span id="bride-mother" style="font-weight: 600; color: var(--text-dark);"></span>
+                    </p>
+                    <p id="bride-address-container" style="font-size: 0.8rem; color: var(--text-light); margin-top: 10px; font-style: italic; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 8px; display: none;">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary); margin-right: 4px; vertical-align: middle;"><path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"></path></svg>
+                        Kediaman: <span id="bride-address"></span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Khitan Specific UI -->
+            <div id="khitan-ui" class="hidden">
+                <div class="couple-box" data-aos="fade-up">
+                    <img id="khitan-img" src="" class="profile-img">
+                    <h2 id="khitan-name" class="font-cursive couple-name-style" style="margin: 15px 0;">...</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 5px;">Putra dari</p>
+                    <p id="khitan-parents" style="font-weight: 600;"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="sec_events_v bg-floral">
+            <h2 class="font-serif" data-aos="fade-up" style="font-size: 2rem; margin-bottom: 1rem;">Waktu & Tempat</h2>
+            <div class="divider-floral"></div>
+            
+            <div class="event-card" id="card-1" data-aos="fade-up" data-aos-duration="1000">
+                <h3 id="event-1-name" class="font-serif" style="color: var(--primary); font-size: 1.5rem; margin-bottom: 15px;">Akad Nikah</h3>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary);"><rect width="416" height="384" x="48" y="80" fill="none" stroke-linejoin="round" stroke-width="32" rx="48"></rect><path fill="none" stroke-linejoin="round" stroke-width="32" d="M128 48v32m256-32v32m-336 80h416"></path></svg>
+                    <p id="event-1-date" style="font-weight: 600; font-size: 0.95rem;"></p>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; margin-bottom: 15px;">
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary);"><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 48c-79.5 0-144 61.39-144 137 0 87 96 224.87 131.25 272.49a15.77 15.77 0 0025.5 0C304 409.89 400 272.07 400 185c0-75.61-64.5-137-144-137z"></path><circle cx="256" cy="192" r="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle></svg>
+                    <p id="event-1-loc" style="font-size: 0.9rem; color: var(--text-light);"></p>
+                </div>
+            </div>
+
+            <div class="event-card" id="card-2" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <h3 id="event-2-name" class="font-serif" style="color: var(--primary); font-size: 1.5rem; margin-bottom: 15px;">Resepsi</h3>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary);"><rect width="416" height="384" x="48" y="80" fill="none" stroke-linejoin="round" stroke-width="32" rx="48"></rect><path fill="none" stroke-linejoin="round" stroke-width="32" d="M128 48v32m256-32v32m-336 80h416"></path></svg>
+                    <p id="event-2-date" style="font-weight: 600; font-size: 0.95rem;"></p>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; margin-bottom: 15px;">
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary);"><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 48c-79.5 0-144 61.39-144 137 0 87 96 224.87 131.25 272.49a15.77 15.77 0 0025.5 0C304 409.89 400 272.07 400 185c0-75.61-64.5-137-144-137z"></path><circle cx="256" cy="192" r="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle></svg>
+                    <p id="event-2-loc" style="font-size: 0.9rem; color: var(--text-light);"></p>
+                </div>
+            </div>
+
+            <div data-aos="zoom-in" data-aos-duration="1000">
+                <p id="disp-address" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.6; margin-bottom: 15px;"></p>
+                <a href="#" id="map-link" class="btn-action" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; width: auto;">
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M405.33 405.33l-74.66-74.66c21.33-29.87 34.13-68.27 34.13-106.67 0-106.67-85.33-192-192-192S-19.2 117.33-19.2 224s85.33 192 192 192c42.67 0 78.93-14.93 110.93-38.4l72.53 74.67L405.33 405.33zM66.13 224c0-59.73 46.93-106.67 106.67-106.67S279.47 164.27 279.47 224 232.53 330.67 172.8 330.67 66.13 283.73 66.13 224z"></path></svg>
+                    Buka Google Maps
+                </a>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="sec_gallery_v bg-cream">
+            <h2 class="font-serif" data-aos="fade-up" style="font-size: 2rem; margin-bottom: 1rem;">Galeri</h2>
+            <div class="divider-floral"></div>
+            <div class="gallery-grid" id="gallery-container" data-aos="fade-up" data-aos-duration="1000">
+                <!-- Dynamic images -->
+            </div>
+        </section>
+
+        <!-- Gift Section -->
+        <section id="gift" class="sec_gift_v">
+            <h2 class="font-serif" data-aos="fade-up" style="font-size: 2rem; margin-bottom: 1rem;">Kado Digital</h2>
+            <div class="divider-floral"></div>
+            <p data-aos="fade-up" style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 2rem;">Doa restu Anda merupakan karunia yang sangat berarti. Jika Bapak/Ibu/Saudara/i ingin memberikan tanda kasih, dapat melalui:</p>
+            
+            <div class="event-card" data-aos="zoom-in" data-aos-duration="1000" style="padding: 2rem 1.5rem;">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="2.5em" width="2.5em" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary); margin-bottom: 10px;"><path d="M528 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm0 400H48V224h480v208zM48 160V80h480v80H48zm112 112H96v48h64v-48z"></path></svg>
+                <p id="gift-bank" style="font-weight: 700; font-size: 1.1rem;"></p>
+                <p id="gift-acc" style="font-size: 1.5rem; color: var(--primary); font-weight: 700; font-family: monospace; letter-spacing: 2px; margin: 10px 0;"></p>
+                <p style="font-size: 0.85rem; color: var(--text-light);">a.n <span id="gift-name" style="font-weight: 600; color: var(--text-dark);"></span></p>
+                <button onclick="copyAcc()" class="btn-action btn-outline" style="margin-top: 1rem; border-radius: 30px;">Salin No. Rekening</button>
+            </div>
+        </section>
+
+        <!-- Wishes & RSVP -->
+        <section id="rsvp" class="sec_wishes_v bg-cream">
+            <h2 class="font-serif" data-aos="fade-up" style="font-size: 2rem; margin-bottom: 1rem;">RSVP & Ucapan</h2>
+            <div class="divider-floral"></div>
+            
+            <div class="wish-form" data-aos="fade-up" data-aos-duration="1000">
+                <div class="input-group">
+                    <label>Nama Anda</label>
+                    <input type="text" id="wish-name-input" placeholder="Masukkan nama">
+                </div>
+                <div class="input-group">
+                    <label>Konfirmasi Kehadiran</label>
+                    <select id="wish-attend">
+                        <option value="Hadir">Hadir</option>
+                        <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
+                        <option value="Ragu-ragu">Masih Ragu-ragu</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Pesan / Doa</label>
+                    <textarea id="wish-msg-input" placeholder="Berikan ucapan atau doa terbaik Anda..." rows="3"></textarea>
+                </div>
+                <button onclick="submitWish()" class="btn-action" id="btn-submit-wish">Kirim RSVP & Ucapan</button>
+            </div>
+
+            <div class="wish-list" id="wishes-container" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <p style="text-align: center; font-size: 0.85rem; color: var(--text-light);">Memuat ucapan...</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <section style="background: var(--dark); color: white; padding: 4rem 1.5rem;">
+            <p style="font-size: 0.85rem; opacity: 0.8;">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu.</p>
+            <h1 class="font-cursive footer-names-style" id="footer-names">...</h1>
+        </section>
+        
+        <!-- Bottom Nav -->
+        <div class="bottom-nav">
+            <a href="#cover" title="Home"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 32L32 240h53.33v240h128V330.67h85.34V480h128V240H480L256 32z"></path></svg></a>
+            <a href="#profile" title="Profil"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 256c53.02 0 96-42.98 96-96s-42.98-96-96-96-96 42.98-96 96 42.98 96 96 96zm135.53 42.67C351.48 274.67 298.53 256 256 256s-95.48 18.67-135.53 42.67C82.88 321.28 64 366.51 64 416v32h384v-32c0-49.49-18.88-94.72-56.47-117.33z"></path></svg></a>
+            <a href="#events" title="Acara" class="sec_events_v"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M384 48h-32V16h-64v32H224V16h-64v32H128C92.65 48 64 76.65 64 112v336c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V112c0-35.35-28.65-64-64-64zm-16 352H144V208h224v192z"></path></svg></a>
+            <a href="#gallery" title="Galeri" class="sec_gallery_v"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><rect width="384" height="256" x="64" y="128" fill="none" stroke-linejoin="round" stroke-width="32" rx="48"></rect><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M64 288l102.08-102.08a48 48 0 0167.84 0l118.08 118.08"></path><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 288l15.92-15.92a48 48 0 0167.84 0l44.24 44.24"></path><circle cx="336" cy="208" r="32" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle></svg></a>
+            <a href="#rsvp" title="Ucapan" class="sec_wishes_v"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-linejoin="round" stroke-width="32" d="M408 64H104a56.16 56.16 0 00-56 56v192a56.16 56.16 0 0056 56h40v80l93.72-78.14a8 8 0 015.13-1.86H408a56.16 56.16 0 0056-56V120a56.16 56.16 0 00-56-56z"></path><circle cx="160" cy="216" r="32"></circle><circle cx="256" cy="216" r="32"></circle><circle cx="352" cy="216" r="32"></circle></svg></a>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox-plus-jquery.min.js"></script>
+
+    <script>
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxW91ANBf-wFz-GT3yTkJWHK2WlLS5uxtoM-dk_SKbb1AsmypvykMADxWP1vHf8Y4mcsQ/exec"; 
+        let settings = {};
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('to') || 'Tamu Undangan';
+        document.getElementById('guest-name').innerText = guestName;
+        document.getElementById('wish-name-input').value = guestName !== 'Tamu Undangan' ? guestName : '';
+
+        window.onload = function() {
+            fetch(`${GAS_API_URL}?action=getSettings`)
+                .then(res => res.json())
+                .then(data => {
+                    settings = data;
+                    renderPage();
+                    loadWishes();
+                });
+        };
+
+        function renderPage() {
+            // Helper convert raw github
+            const toRaw = (url) => {
+                if (!url) return "";
+                if (url.includes("github.com") && url.includes("/blob/")) {
+                    return url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
+                }
+                return url;
+            };
+
+            // Set Primary Color
+            if(settings.primary_color && settings.primary_color.value) {
+                document.documentElement.style.setProperty('--primary', settings.primary_color.value);
+            }
+
+            const isWedding = settings.type.value === 'wedding';
+            const groomNickname = (settings.groom_nickname && settings.groom_nickname.value) || (settings.groom_name && settings.groom_name.value ? settings.groom_name.value.split(' ')[0] : 'Groom');
+            const brideNickname = (settings.bride_nickname && settings.bride_nickname.value) || (settings.bride_name && settings.bride_name.value ? settings.bride_name.value.split(' ')[0] : 'Bride');
+            const mNames = isWedding ? `${groomNickname} & ${brideNickname}` : settings.khitan_name.value;
+            
+            document.getElementById('open-names').innerText = mNames;
+            document.getElementById('hero-names').innerText = mNames;
+            document.getElementById('footer-names').innerText = mNames;
+            document.getElementById('cover').style.backgroundImage = `url('${toRaw(settings.hero_image.value)}')`;
+            document.getElementById('overlay-bg').style.backgroundImage = `url('${toRaw(settings.hero_image.value)}')`;
+            
+            // Visibility Profiles & Dynamic Text
+            if (!isWedding) {
+                document.getElementById('open-title').innerText = "Tasyakuran Khitanan";
+                document.getElementById('hero-title').innerText = "Khitanan";
+                document.getElementById('intro-text').innerText = "Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara tasyakuran khitanan putra kami:";
+
+                document.getElementById('wedding-ui').classList.add('hidden');
+                document.getElementById('khitan-ui').classList.remove('hidden');
+                document.getElementById('khitan-name').innerText = settings.khitan_name.value;
+                document.getElementById('khitan-parents').innerText = settings.khitan_parents.value;
+                document.getElementById('khitan-img').src = toRaw(settings.khitan_photo.value);
+            } else {
+                document.getElementById('open-title').innerText = "The Wedding Of";
+                document.getElementById('hero-title').innerText = "Pernikahan";
+                document.getElementById('intro-text').innerText = "Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami:";
+
+                // Groom
+                const groomNick = (settings.groom_nickname && settings.groom_nickname.value) || (settings.groom_name && settings.groom_name.value ? settings.groom_name.value.split(' ')[0] : '');
+                document.getElementById('groom-nickname').innerText = groomNick;
+                document.getElementById('groom-fullname').innerText = settings.groom_name.value;
+                document.getElementById('groom-father').innerText = settings.groom_father.value;
+                document.getElementById('groom-mother').innerText = settings.groom_mother.value;
+                document.getElementById('groom-img').src = toRaw(settings.groom_photo.value) || 'https://via.placeholder.com/150';
+                
+                const groomOrder = (settings.groom_child_number && settings.groom_child_number.value) || "";
+                document.getElementById('groom-order').innerText = groomOrder ? `Putra ${groomOrder}` : "Putra";
+                
+                const groomAddr = (settings.groom_address && settings.groom_address.value) || "";
+                const groomAddrCont = document.getElementById('groom-address-container');
+                if (groomAddr) {
+                    document.getElementById('groom-address').innerText = groomAddr;
+                    groomAddrCont.style.display = 'block';
+                } else {
+                    groomAddrCont.style.display = 'none';
+                }
+                
+                // Bride
+                const brideNick = (settings.bride_nickname && settings.bride_nickname.value) || (settings.bride_name && settings.bride_name.value ? settings.bride_name.value.split(' ')[0] : '');
+                document.getElementById('bride-nickname').innerText = brideNick;
+                document.getElementById('bride-fullname').innerText = settings.bride_name.value;
+                document.getElementById('bride-father').innerText = settings.bride_father.value;
+                document.getElementById('bride-mother').innerText = settings.bride_mother.value;
+                document.getElementById('bride-img').src = toRaw(settings.bride_photo.value) || 'https://via.placeholder.com/150';
+                
+                const brideOrder = (settings.bride_child_number && settings.bride_child_number.value) || "";
+                document.getElementById('bride-order').innerText = brideOrder ? `Putri ${brideOrder}` : "Putri";
+                
+                const brideAddr = (settings.bride_address && settings.bride_address.value) || "";
+                const brideAddrCont = document.getElementById('bride-address-container');
+                if (brideAddr) {
+                    document.getElementById('bride-address').innerText = brideAddr;
+                    brideAddrCont.style.display = 'block';
+                } else {
+                    brideAddrCont.style.display = 'none';
+                }
+            }
+
+            // Events
+            const date1 = new Date(settings.event_1_date.value);
+            const date1Str = date1.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('event-1-name').innerText = settings.event_1_name.value;
+            document.getElementById('event-1-date').innerText = `${date1Str} | Pukul ${date1.getHours().toString().padStart(2,'0')}:${date1.getMinutes().toString().padStart(2,'0')} WIB`;
+            document.getElementById('event-1-loc').innerText = settings.event_1_loc.value;
+
+            const date2 = new Date(settings.event_2_date.value);
+            const date2Str = date2.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            const date2FullStr = date2.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('hero-date').innerText = date2FullStr;
+            document.getElementById('event-2-name').innerText = settings.event_2_name.value;
+            document.getElementById('event-2-date').innerText = `${date2Str} | Pukul ${date2.getHours().toString().padStart(2,'0')}:${date2.getMinutes().toString().padStart(2,'0')} WIB`;
+            document.getElementById('event-2-loc').innerText = settings.event_2_loc.value;
+
+            document.getElementById('disp-address').innerText = settings.location_address.value;
+            document.getElementById('map-link').href = settings.location_url.value;
+
+            // Gift
+            document.getElementById('gift-bank').innerText = settings.gift_bank.value;
+            document.getElementById('gift-acc').innerText = settings.gift_acc.value;
+            document.getElementById('gift-name').innerText = settings.gift_name.value;
+
+            // Gallery
+            const gallery = document.getElementById('gallery-container');
+            gallery.innerHTML = "";
+            ['gallery_1','gallery_2','gallery_3','gallery_4'].forEach(key => {
+                if (settings[key] && settings[key].value) {
+                    const rawUrl = toRaw(settings[key].value);
+                    
+                    // Fixed Lightbox Structure
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'gallery-item';
+                    wrapper.setAttribute('data-aos', 'zoom-in');
+                    const link = document.createElement('a');
+                    link.href = rawUrl;
+                    link.setAttribute('data-lightbox', 'gallery');
+                    const imgNode = document.createElement('img');
+                    imgNode.src = rawUrl;
+                    link.appendChild(imgNode);
+                    wrapper.appendChild(link);
+                    gallery.appendChild(wrapper);
+                }
+            });
+
+            // Music
+            document.getElementById('bg-music').src = toRaw(settings.music_url.value);
+            
+            // Visibility Checklists
+            ['sec_events_v', 'sec_gallery_v', 'sec_gift_v', 'sec_wishes_v'].forEach(key => {
+                if(settings[key] && !settings[key].visible) {
+                    const elements = document.querySelectorAll('.' + key);
+                    elements.forEach(el => el.classList.add('hidden'));
+                    const sec = document.getElementById(key.replace('sec_', '').replace('_v', ''));
+                    if(sec) sec.classList.add('hidden');
+                }
+            });
+
+             startCountdown(settings.event_2_date.value);
+        }
+
+        function startCountdown(date) {
+            const target = new Date(date).getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = target - now;
+                if (diff < 0) return;
+                document.getElementById('cd-days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2,'0');
+                document.getElementById('cd-hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2,'0');
+                document.getElementById('cd-mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2,'0');
+                document.getElementById('cd-secs').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2,'0');
+            }, 1000);
+        }
+
+        function openInvitation() {
+            document.getElementById('opening-overlay').style.transform = 'translateY(-100%)';
+            document.body.style.overflow = 'auto'; // allow scroll
+            
+            const music = document.getElementById('bg-music');
+            music.play().then(() => {
+                document.getElementById('icon-music-play').style.display = 'block';
+                document.getElementById('icon-music-pause').style.display = 'none';
+            }).catch(e => console.log("Auto-play prevented", e));
+            
+            // Initialize Animations
+            AOS.init({ once: true, offset: 50 });
+            
+            setTimeout(() => {
+                document.getElementById('opening-overlay').style.display = 'none';
+            }, 1200);
+        }
+
+        function toggleAudio() {
+            const m = document.getElementById('bg-music');
+            const playIcon = document.getElementById('icon-music-play');
+            const pauseIcon = document.getElementById('icon-music-pause');
+            
+            if (m.paused) { 
+                m.play(); 
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            } else { 
+                m.pause(); 
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }
+        }
+
+        function copyAcc() {
+            const acc = document.getElementById('gift-acc').innerText;
+            navigator.clipboard.writeText(acc);
+            alert("No. Rekening disalin ke clipboard!");
+        }
+
+        function submitWish() {
+            const name = document.getElementById('wish-name-input').value;
+            const attend = document.getElementById('wish-attend').value;
+            const msg = document.getElementById('wish-msg-input').value;
+            const btn = document.getElementById('btn-submit-wish');
+            
+            if (!name || !msg) return alert("Harap isi nama dan pesan ucapan.");
+            
+            btn.innerText = "Mengirim...";
+            btn.disabled = true;
+            
+            // Create attendance badge text
+            const fullMessage = `${msg} [${attend}]`;
+
+            fetch(`${GAS_API_URL}?action=sendWish`, {
+                method: 'POST',
+                body: JSON.stringify({ name: name, message: fullMessage })
+            }).then(() => {
+                document.getElementById('wish-msg-input').value = '';
+                btn.innerText = "Kirim RSVP & Ucapan";
+                btn.disabled = false;
+                loadWishes();
+            }).catch(err => {
+                alert("Gagal: " + err);
+                btn.innerText = "Kirim RSVP & Ucapan";
+                btn.disabled = false;
+            });
+        }
+
+        function loadWishes() {
+            fetch(`${GAS_API_URL}?action=getWishes`)
+                .then(res => res.json())
+                .then(wishes => {
+                    const container = document.getElementById('wishes-container');
+                    container.innerHTML = '';
+                    wishes.forEach(w => {
+                        let attendBadge = '';
+                        let cleanMsg = w.message;
+                        
+                        // Parse attendance from message
+                        if(cleanMsg.includes('[Hadir]')) { attendBadge = '<span class="badge" style="background: #34c759;">Hadir</span>'; cleanMsg = cleanMsg.replace('[Hadir]', ''); }
+                        else if(cleanMsg.includes('[Tidak Hadir]')) { attendBadge = '<span class="badge" style="background: #ff3b30;">Tidak Hadir</span>'; cleanMsg = cleanMsg.replace('[Tidak Hadir]', ''); }
+                        else if(cleanMsg.includes('[Ragu-ragu]')) { attendBadge = '<span class="badge" style="background: #ffcc00; color: #333;">Ragu</span>'; cleanMsg = cleanMsg.replace('[Ragu-ragu]', ''); }
+                        
+                        const div = document.createElement('div');
+                        div.className = 'wish-box';
+                        div.innerHTML = `<h4>${w.name} ${attendBadge}</h4><p>${cleanMsg}</p>`;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        // Scroll Spy for Bottom Nav
+        window.addEventListener('scroll', () => {
+            const sections = ['cover', 'profile', 'events', 'gallery', 'rsvp'];
+            let current = 'cover';
+            
+            sections.forEach(secId => {
+                const sec = document.getElementById(secId);
+                if (sec && !sec.classList.contains('hidden')) {
+                    const rect = sec.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight / 2) {
+                        current = secId;
+                    }
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.bottom-nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
